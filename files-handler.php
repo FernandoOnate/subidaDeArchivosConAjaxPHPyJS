@@ -1,58 +1,50 @@
 <?php
 
-function adaptativeResponse($success, $msg, $error)
+function adaptativeResponse($success, $msg)
 {
     header('Content-Type: application/json; charset-utf-8');
-    $json = ['success' => $success, 'message' => $msg, 'error' => $error];
+    $json = ['success' => $success, 'message' => $msg];
     return $json;
 }
 
 function moveImage()
 {
-    $err = '';
-    $message = '';
+    if (isset($_FILES['files'])) {
+        $err = 0;
+        $message = '';
+        $files_input = $_FILES['files'];
+        $uploadDir = __DIR__ . '\uploads\ ';
+        $extentions_allowed = array('jpeg', 'jpg');
 
-    $uploadDir = __DIR__ . '\uploads\ ';
-    
-    $filesInput = $_FILES['files'];
+        foreach ($files_input['error'] as $key => $error) {
 
-    $filesName = $filesInput['name'];
-    $filesTmpName = $filesInput['tmp_name'];
-    $filesError = $filesInput['error'];
-    $tipo = $filesInput['type'];
+            if ($error  == UPLOAD_ERR_OK) {
 
-    if (isset($filesInput)) {
-        foreach ($filesName as $key => $value) {
+                $tmp_name = $files_input['tmp_name'][$key];
+                $file_name = $files_input['name'][$key];
+                $file_extention = pathinfo($file_name, PATHINFO_EXTENSION);
+                $toPath = $uploadDir . uniqid() . '_' . $file_name;
 
-            if ($filesError[$key] == UPLOAD_ERR_OK) {
-
-                $toPath = $uploadDir . uniqid() . '_' . $value;
-
-                if ($tipo[$key] == 'image/jpeg' or $tipo[$key] == 'image/jpg') {
-                    $uploaded = move_uploaded_file($filesTmpName[$key], $toPath);
-                    $message = 'Imágen (es) subida (s) con éxito.!';
-                    $err = 'SUCCESS';
-                } else {
-                    //    INCORRECTA SUBIDA
-                    $err = 'No es .jpg';
-                    $message = 'Tipo de imágen no compatible con: JPG.';
+                if (!in_array($file_extention, $extentions_allowed)) {
+                    $message = 'El formato no es JPG!';
+                    $err = 1;
                 }
-            } else {
-                // echo '<strong>Hubo errores</strong>';
-                $message = 'Error inesperado al subir.';
-                $err = 'unexpected';
+
+                if(move_uploaded_file($tmp_name, $toPath)){
+                    $message = 'La operación resultó exitosa.';
+                }else{
+                    $message = 'Error al subir la foto';
+                    $err = 2;
+                }
             }
         }
-    } else {
-        $err = 'No inputs';
-        $message = 'No existe files input';
     }
 
-    if ($err === 'SUCCESS') {
-        return json_encode(adaptativeResponse(true, $message, $err), JSON_UNESCAPED_UNICODE);
+    if ($err > 0) {
+        return json_encode(adaptativeResponse(false, $message), JSON_UNESCAPED_UNICODE);
         die();
     } else {
-        return json_encode(adaptativeResponse(false, $message, $err), JSON_UNESCAPED_UNICODE);
+        return json_encode(adaptativeResponse(true, $message), JSON_UNESCAPED_UNICODE);
         die();
     }
 }
