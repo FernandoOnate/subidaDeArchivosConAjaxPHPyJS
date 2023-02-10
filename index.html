@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" rel="stylesheet">
+    <title>Test</title>
+</head>
+
+<body>
+    <form style="margin-left: 2%;">
+        <input type="file" accept=".jpg" multiple name="files[]">
+        <br>
+        <button type="submit" name="en">Subir</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+    <script src="./index.js"></script>
+
+    <!-- <script>
+        window.addEventListener('load', function () {
+            const formulario = document.querySelector('form');
+            formulario.addEventListener('submit', function (evento) {
+                evento.preventDefault();
+                let files = document.querySelector('[type="file"]').files;
+                // console.log('Files antes del for');
+                console.log(files);
+                const formData = new FormData();
+                let promises = [];
+
+                for (let i = 0; i < files.length; i++) {
+                    promises.push(
+                        new Promise((resolve, reject) => {
+                            new Compressor(files[i], {
+                                quality: 0.8,
+                                success(resultado) {
+                                    // console.log(resultado);
+                                    resolve(resultado);
+                                }, error(err) {
+                                    reject('No se pudo resolver la promesa');
+                                }
+                            })
+                        })
+                    )
+                }
+                let fotos = [];
+                (
+                    async function () {
+                        let cont = 0;
+                        for (let promesa of promises) {
+                            await promesa
+                                .then(
+                                    (foto) => {fotos.push(foto);}
+                                )
+                                .catch(
+                                    (err) => { console.log(err) }
+                                )
+                            cont++;
+                        }
+                    }
+                )()
+                console.log(fotos)
+
+
+
+                // console.log('Files despues del for');
+                // console.log(files);
+                // for (let file of files) {
+                //     new Compressor(file, {
+                //         quality: 0.8,
+                //         success(resultado) {
+                //             formData.append('file', resultado, resultado.name);
+                //         }
+                //     })
+                // }
+            })
+        })
+    </script> -->
+</body>
+
+</html>
