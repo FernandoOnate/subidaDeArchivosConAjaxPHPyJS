@@ -3,7 +3,7 @@ function getImages()
 {
   $response = array();
   $errors = array();
-  $uploadFolder =  __DIR__ . '\uploads ';
+  $uploadFolder =  __DIR__ . '\uploads';
   $extentions_allowed = array('jpeg', 'jpg');
   $counter_errors = 0;
   header('Content-Type: application/json; charset-utf-8');
