@@ -7,24 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
     <link href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./styles.css">
-    <title>Test</title>
+    <title>App subir fotos</title>
 </head>
 
 <body>
+    <h1 class="titulo">Este programa está hecho con AJAX, JS y PHP. Obviando HTML y CSS.</h1>
     <form class="form">
         <label for="files" class="form_label">Da click y selecciona las imágenes que deseas subir (solo JPG).</label>
         <br>
-        <input type="file" id="fileV" accept="image/*" multiple name="files[]" class="form_file_input">
+        <input type="file" accept="image/*" multiple name="files[]" class="form_file_input">
         <br><br>
-        <button type="submit" class="form_submit_button">Subir</button>
+        <button type="submit" class="form_submit_button">Subir archivos&nbsp;<i class="bi bi-cloud-upload-fill" id="up"></i></button>
     </form>
-    <h1 class="titulo" id="titulo"></h1>
+    <h2 class="titulo" id="titulo"></h2>
+    <!--<h4 class="titulo"> Estoy al tanto del bug que cuando subes una nueva se duplican pero cuando das f5 se arregla. Trabajo en ello</h4>-->
     <div class="images-container">
         <div class="image-container" id="image-container">
             <div id="msg"></div>
         </div>
     </div>
+    <footer>
+        <a target="_blank" href="https://github.com/FernandoOnate/subidaDeArchivosConAjaxPHPyJS" id="end" nofollow><i class="bi bi-box-arrow-up-right"></i>&nbsp; Desde LATAM, hecho desde 0 con &#x2764; revisa el código en GitHub &nbsp;<i class="bi bi-github"></i></a> 
+        <a id="end" href="./terms.html" nofollow ><i class="bi bi-file-earmark-text-fill"></i>&nbsp; TERMINOS DE USO Y PRIVACIDAD</i></a> 
+    </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>

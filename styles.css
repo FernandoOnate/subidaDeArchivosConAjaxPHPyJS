@@ -3,8 +3,42 @@
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+body {
+    overflow-x: hidden;
+    background: rgb(36, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(36, 0, 0, 1) 0%,
+      rgba(101, 92, 154, 1) 98%
+    );
+    color: white;
+  }
+  
+  /* header {
+    align-items: center;
+    justify-content: center;
+    display: grid;
+  } */
+  
+  a {
+    padding: 7px;
+    text-decoration: none;
+    color: white;
+    background-color: #3C6C64;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    transition: 0.2s;
+  }
+  a:hover {   
+    text-decoration: 2px solid underline;
+    -webkit-text-underline-position: under;
+    text-underline-position: under;
+    background-color: #62C1B1;
+  }
+  
 .form {
-    border: 1px solid black;
+    border: 1px solid white;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -22,8 +56,9 @@
 .form_file_input {
     padding: 1rem;
     border: 1px solid #ccc;
-    background-color: rgb(233, 252, 233);
+    background-color: rgb(225, 244, 205);
     cursor: pointer;
+    color: black;
 }
 
 .form_file_input:hover {
@@ -49,12 +84,9 @@ input::file-selector-button:hover {
     display: none;
 
 }
-.form_file_input::before {
-    /* content: 'Selecciona algo'; */
-}
-
+/* BOTON SUBMIT */
 .form_submit_button {
-    padding: 0.5rem;
+    padding: 0.7rem;
     color: white;
     font-weight: bold;
     background-color: rgb(29, 29, 151);
@@ -86,4 +118,23 @@ input::file-selector-button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+#up{
+    font-size: 1.5rem;
+}
+footer{
+    text-align: center;
+    position:relative;
+    bottom: 0;
+    /* left: 10%;
+    right: 10%; */
+    
+}
+#end{
+    background-color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
 }

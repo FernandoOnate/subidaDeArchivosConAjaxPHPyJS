@@ -109,7 +109,7 @@ function getNewImages(newData) {
             const response = await JSON.parse(request.responseText);
 
             if (response.length > 0) {
-                // titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
+                // titulo.innerHTML = 'Aquí tienes las imágenes que se han subido.';
                 // emptyImagesMessage.innerHTML = '';
                 for (let i = 0; i < response.length; i++) {
                     resultsPHP[i] = (response[i]);
