@@ -15,13 +15,15 @@
     <form class="form">
         <label for="files" class="form_label">Da click y selecciona las imágenes que deseas subir (solo JPG).</label>
         <br>
-        <input type="file" accept=".jpg" multiple name="files[]" class="form_file_input">
+        <input type="file" accept="image/*" multiple name="files[]" class="form_file_input">
         <br><br>
         <button type="submit" class="form_submit_button">Subir</button>
     </form>
-    <h1 class="titulo">Aquí tienes las imágenes que subiste.</h1>
+    <h1 class="titulo" id="titulo"></h1>
     <div class="images-container">
-        <div class="image-container" id="image-container"></div>
+        <div class="image-container" id="image-container">
+            <div id="msg"></div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>

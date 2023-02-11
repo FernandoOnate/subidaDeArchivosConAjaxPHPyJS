@@ -25,16 +25,16 @@ function moveImage()
                 $file_extention = pathinfo($file_name, PATHINFO_EXTENSION);
                 $toPath = $uploadDir . uniqid() . '_' . $file_name;
 
-                if (!in_array($file_extention, $extentions_allowed)) {
-                    $message = 'El formato no es JPG!';
+                if (in_array($file_extention, $extentions_allowed)) {
+                    if (move_uploaded_file($tmp_name, $toPath) and $err == 0) {
+                        $message = 'La operación resultó exitosa.';
+                    } else {
+                        $message = 'Error al subir la foto';
+                        $err = 2;
+                    }
+                } else {
+                    $message = '¡El formato no es JPG!';
                     $err = 1;
-                }
-
-                if(move_uploaded_file($tmp_name, $toPath)){
-                    $message = 'La operación resultó exitosa.';
-                }else{
-                    $message = 'Error al subir la foto';
-                    $err = 2;
                 }
             }
         }
