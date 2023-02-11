@@ -68,7 +68,8 @@ input::file-selector-button:hover {
 .image-container{
     padding: 1rem;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
@@ -77,6 +78,7 @@ input::file-selector-button:hover {
     margin-top: 2%;
     width: 300px;
     padding: 1rem;
+    margin: 0.5rem;
 }
 
 /* TITULO */

@@ -20,10 +20,7 @@ function getImages()
           array_push($errors, ['File extension is not JPG or JPEG']);
           $counter_errors++;
         } else {
-          // array_push($response, $uploadFolder.' \ '.$imagen);
           array_push($response, $imagen);
-          // $response[$cont] = $uploadFolder.' \ '.$imagen;
-          // $cont++;
         }
       } else {
         $counter_errors++;
@@ -32,10 +29,8 @@ function getImages()
     closedir($gestor);
   }
 
-  // if (count($response) === 0) {
   if ($counter_errors > 0 && count($response) == 0) {
     array_push($errors, 'No files in directory');
-    // echo implode($response);
   } else {
     array_push($response);
   }

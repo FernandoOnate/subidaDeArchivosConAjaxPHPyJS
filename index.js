@@ -1,14 +1,22 @@
+const form = document.querySelector('form');
+
+const imageContainer = document.getElementById('image-container');
+const emptyImagesMessage = document.getElementById('msg');
+const titulo = document.getElementById('titulo');
+const rute = './uploads/';
+
+let resultsPHP = [];
+
 window.addEventListener('load', function () {
-
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', e => {
-
-        e.preventDefault();
+    
+    getImages();
+    
+    form.addEventListener('submit', ev => {
+        
+        ev.preventDefault();
         const files = form.querySelector('input[type="file"]').files;
-
         let promises = [];
-
+        // PUSHEAR LAS PROMESAS AL ARRAY PROMISES
         for (let file of files) {
             promises.push(new Promise((resolve, reject) => {
                 new Compressor(file, {
@@ -21,87 +29,125 @@ window.addEventListener('load', function () {
                 })
             }))
         }
-        // RESUELVO LAS PROMESAS CON UNA FUNCION ANONIMAS
+        // RESUELVO LAS PROMESAS
         Promise.all(promises)
             .then(
                 results => subirArchivos(results)
             )
             .catch(
-                e => console.log(e)
+                err => console.log(err)
             );
 
-        // mandar los archivos a php
-        function subirArchivos(blobArray) {
-            let png = false;
-            for (let index in blobArray) {
-                let ext = blobArray[index].name.split('.')[1];
-                if (ext == 'jpg') {
-                    continue;
-                }
-                png = true;
-            }
-            if (!png) {
-                const formData = new FormData();
-
-                blobArray.forEach(blobFile => {
-                    formData.append('files[]', new File([blobFile], blobFile.name));
-                });
-
-                // formData.append('files[]', new File([blobFile], blobFile.name));
-                const request = new XMLHttpRequest();
-                request.open('POST', './files-handler.php', true);
-                request.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        let message = JSON.parse(this.responseText).message;
-                        let success = JSON.parse(this.responseText).success;
-                        if (success) {
-                            msg('EXITO!', message, false);
-                            getImages();
-                        } else {
-                            msgError('ERROR!', message, false);
-                        }
-                    }
-                }
-                request.send(formData);
-                e.target.reset();
-            } else {
-                msgError('ERROR', 'TODOS tienen que ser JPG');
-            }
-
+    });
+})
+function pushNewImages(phpNewData, newData) {
+    let dataReversed = [...phpNewData].reverse();
+    let emptyMessage = emptyImagesMessage.innerHTML;
+    let title = titulo.innerHTML;
+    if(emptyMessage.length){
+        emptyImagesMessage.innerHTML = '';
+    }
+    if(!title.length){
+        titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
+    }
+    for (let i = 0; i < newData.length; i++) {
+        const newImg = new Image();
+        newImg.src = rute + dataReversed[i];
+        imageContainer.appendChild(newImg);
+    }
+}
+// mandar los archivos a php
+function subirArchivos(blobArray) {
+    let png = false;
+    // verifico que la extension sea jpg
+    for (let index in blobArray) {
+        let ext = blobArray[index].name.split('.')[1];
+        if (ext == 'jpg') {
+            continue;
         }
-    })
-    // OBTENER LAS IMAGENES DEL DIRECTORIO
-    function getImages() {
-        const request = new XMLHttpRequest();
+        png = true;
+    }
+    // si es jpg continua
+    if (!png) {
+        const formData = new FormData();
 
-        request.open('GET', 'list.php', true);
+        blobArray.forEach(blobFile => {
+            formData.append('files[]', new File([blobFile], blobFile.name));
+        });
+
+        const request = new XMLHttpRequest();
+        request.open('POST', './files-handler.php', true);
 
         request.onreadystatechange = function () {
-            if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-
-                let response = JSON.parse(request.responseText);
-                let imageList = document.getElementById('image-container');
-                let msg = document.getElementById('msg');
-                let titulo = document.getElementById('titulo');
-
-                if (response.length > 0) {
-                    titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
-                    for (let i = 0; i < response.length; i++) {
-                        msg.innerHTML = '';
-                        let fileItem = document.createElement('img');
-                        fileItem.src = './uploads/' + response[i];
-                        imageList.appendChild(fileItem);
-                    }
+            if (this.readyState == 4 && this.status == 200) {
+                let message = JSON.parse(this.responseText).message;
+                let success = JSON.parse(this.responseText).success;
+                if (success) {
+                    form.reset();
+                    msg('EXITO!', message, false);
+                    getNewImages(blobArray);
                 } else {
-                    msg.innerHTML = 'No hay imágenes en el directorio, intenta subir alguna.';
+                    msgError('ERROR!', message, false);
                 }
             }
-        };
-        request.send();
+        }
+        request.send(formData);
+    } else {
+        msgError('ERROR', 'TODOS tienen que ser JPG');
     }
-    getImages();
-})
+}
+// get new dada
+function getNewImages(newData) {
+    const request = new XMLHttpRequest();
 
+    request.open('GET', 'list.php', true);
+
+    request.onreadystatechange = async function () {
+        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
+
+            const response = await JSON.parse(request.responseText);
+
+            if (response.length > 0) {
+                // titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
+                // emptyImagesMessage.innerHTML = '';
+                for (let i = 0; i < response.length; i++) {
+                    resultsPHP[i] = (response[i]);
+                }
+                pushNewImages(resultsPHP, newData);
+            } else {
+                // emptyImagesMessage.innerHTML = 'No hay imágenes en el directorio, intenta subir alguna.';
+            }
+        }
+
+    };
+    request.send();
+}
+// OBTENER LAS IMAGENES DEL DIRECTORIO
+function getImages() {
+    const request = new XMLHttpRequest();
+
+    request.open('GET', 'list.php', true);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
+
+            const response = JSON.parse(request.responseText);
+
+            if (response.length > 0) {
+                titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
+                emptyImagesMessage.innerHTML = '';
+                for (let i = 0; i < response.length; i++) {
+                    const newImg = new Image();
+                    newImg.src = rute + response[i];
+                    imageContainer.appendChild(newImg);
+                }
+            } else {
+                emptyImagesMessage.innerHTML = 'No hay imágenes en el directorio, intenta subir alguna.';
+            }
+        }
+    };
+    request.send();
+}
 // mensaje para las alertas
 function msg(titulo, mensaje, closeOn) {
     $.toast({
