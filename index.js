@@ -8,11 +8,11 @@ const rute = './uploads/';
 let resultsPHP = [];
 
 window.addEventListener('load', function () {
-    
+
     getImages();
-    
+
     form.addEventListener('submit', ev => {
-        
+
         ev.preventDefault();
         const files = form.querySelector('input[type="file"]').files;
         let promises = [];
@@ -40,14 +40,15 @@ window.addEventListener('load', function () {
 
     });
 })
+// compara los datos en la carpeta vs el nuevo archivo para solo agregar 1 elemnto html
 function pushNewImages(phpNewData, newData) {
     let dataReversed = [...phpNewData].reverse();
     let emptyMessage = emptyImagesMessage.innerHTML;
     let title = titulo.innerHTML;
-    if(emptyMessage.length){
+    if (emptyMessage.length) {
         emptyImagesMessage.innerHTML = '';
     }
-    if(!title.length){
+    if (!title.length) {
         titulo.innerHTML = 'Aquí tienes las imágenes que subiste.';
     }
     for (let i = 0; i < newData.length; i++) {
@@ -148,6 +149,7 @@ function getImages() {
     };
     request.send();
 }
+
 // mensaje para las alertas
 function msg(titulo, mensaje, closeOn) {
     $.toast({
